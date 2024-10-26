@@ -1,0 +1,1 @@
+SELECT xp, lvl FROM users WHERE username = :username;

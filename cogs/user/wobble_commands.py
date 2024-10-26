@@ -5,7 +5,14 @@ class WobbleCommands(commands.Cog):
         self.bot = bot
 
     @commands.command(name='wobble', help='Wobble?')
-    async def help_command(self, ctx):
+    async def wobble(self, ctx):
+        """Send a playful 'Wobble' message.
+
+        This command sends a fun message to the context where it was invoked.
+
+        :param ctx: The context in which the command was invoked, including
+                    information about the message, the channel, and the author.
+        """
         await ctx.send("WobbLe wOBblE ＼（〇_ｏ）／")
 
 
