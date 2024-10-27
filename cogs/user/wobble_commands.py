@@ -13,7 +13,7 @@ class WobbleCommands(commands.Cog):
         :param ctx: The context in which the command was invoked, including
                     information about the message, the channel, and the author.
         """
-        await ctx.send("WobbLe wOBblE ＼（〇_ｏ）／")
+        await ctx.send("WobbLe wOBblE ||＼（〇_ｏ）／||")
 
 
 async def setup(bot):

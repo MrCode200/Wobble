@@ -28,7 +28,8 @@ async def on_ready():
 # Load Cogs
 async def setup():
     await bot.load_extension('events.member_events')
-    await bot.load_extension('events.level_events')
+    await bot.load_extension('events.request_manager')
+    await bot.load_extension('cogs.user.util_commands')
     await bot.load_extension('cogs.user.info_commands')
     await bot.load_extension('cogs.user.wobble_commands')
 

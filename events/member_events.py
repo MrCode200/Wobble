@@ -11,14 +11,14 @@ class MemberEvents(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, member: Member):
         channel = self.bot.get_channel(1299755932636545095)
-        await channel.send(choice([f"Wobbly freut sich das du gejoint bist, {member.mention}（￣︶￣）↗　",
-                           f"hALlO {member.mention} (❁´◡`❁)",
-                           f"Nice t0 sEe U joIn (≧∇≦)ﾉ"]))
+        await channel.send(choice([f"`Wobble` freut sich das du gejoint bist, @{member.mention}||（￣︶￣）↗||",
+                           f"hALlO @{member.mention} ||(❁´◡`❁)||",
+                           f"Nice t0 sEe U joIn @{member.mention} ||(≧∇≦)ﾉ||"]))
 
     @commands.Cog.listener()
     async def on_member_leave(self, member: Member):
         channel = self.bot.get_channel(1299755932636545095)
-        await channel.send(f"Wobbly hätte nie gedacht das einer ihn mal verlässt （；´д｀）ゞ")
+        await channel.send(f"Wobbly hätte nie gedacht das einer ihn mal verlässt ||（；´д｀）ゞ||")
 
 
 async def setup(bot):

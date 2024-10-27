@@ -1,7 +1,8 @@
 import sqlite3
+from functools import lru_cache
 from pathlib import Path
 
-
+@lru_cache(maxsize=None)
 def read_sql_query(sql_path: str) -> str:
     """Read the SQL query from a specified file.
 

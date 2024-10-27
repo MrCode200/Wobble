@@ -23,9 +23,9 @@ class InfoCommands(commands.Cog):
         data = fetch_user_xp_and_lvl(str(ctx.author))
 
         if data[0] is None:
-            await ctx.send(f"DEBUG: {ctx.author} is not in database")
+            await ctx.send(f"DEBUG: `1`{ctx.author}` is not in database")
         else:
-            await ctx.send(f"{ctx.author} has {data[0]}xp and is Level {data[1]}")
+            await ctx.send(f"Wobble knows that `{ctx.author}` has `{data[0]} xp` and is `Level {data[1]}` ||(。・ω・。)||")
 
 
 async def setup(bot):
