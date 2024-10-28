@@ -24,6 +24,8 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 async def on_ready():
     print(f'{bot.user} is now running!')
 
+    await bot.tree.sync()
+
 
 # Load Cogs
 async def setup():

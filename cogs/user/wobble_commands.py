@@ -4,7 +4,7 @@ class WobbleCommands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name='wobble', help='Wobble?')
+    @commands.hybrid_command(name='wobble', help='Wobble?')
     async def wobble(self, ctx):
         """Send a playful 'Wobble' message.
 

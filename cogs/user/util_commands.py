@@ -8,7 +8,7 @@ class UtilCommands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name='flipcoin', help='Flips a Coino')
+    @commands.hybrid_command(name='flipcoin', help='Flips a Coino')
     async def flip_coin_command(self, ctx):
         """Command to flip a digital coin
 

@@ -8,7 +8,7 @@ class InfoCommands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name='showprofile', help='Provides information your profile')
+    @commands.hybrid_command(name='showprofile', help='Provides information your profile')
     async def show_profile_command(self, ctx):
         """Command to show the user's profile information.
 
