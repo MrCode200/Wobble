@@ -34,14 +34,16 @@ class RequestHandler(commands.Cog):
             return
         print("Wobble was called!")
 
+        util_commands = self.bot.get_cog("UtilCommands")
+
         # Check for "flip coin" in message
         if "flip" in message_content and "coin" in message_content:
-            util_command = self.bot.get_cog("UtilCommands")
-            if util_command is not None:
-                await message.channel.send(await util_command.flip_coin_command(None))
+            if util_commands is not None:
+                await message.channel.send(await util_commands.flip_coin_command(None))
 
-        if "reset me" in message_content or "!resetprofile" in message_content:
-            await message.channel.send(reset_profile(username))
+        if "reset me" in message_content:
+            if util_commands is not None:
+                await message.channel.send(await reset_profile(username))
 
 
 

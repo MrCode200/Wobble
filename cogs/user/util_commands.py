@@ -2,6 +2,8 @@ import random
 
 from discord.ext import commands
 
+from utils import reset_profile
+
 
 class UtilCommands(commands.Cog):
     """Cog that contains commands related to user profile information."""
@@ -22,6 +24,10 @@ class UtilCommands(commands.Cog):
         if ctx is None:
             return f"Wobble heard to flip Coin, Wobble flipped `{result}` ||(o゜▽゜)o☆||"
         await ctx.send(f"Wobble heard to flip Coin, Wobble flipped `{result}` ||(o゜▽゜)o☆||")
+
+    @commands.hybrid_command(name='resetprofile', help="Resets your profile to level 1 and 0xp")
+    async def reset_profile_command(self, ctx):
+        await ctx.send(reset_profile(str(ctx.author)))
 
 
 async def setup(bot):
