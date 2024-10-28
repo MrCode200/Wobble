@@ -32,7 +32,6 @@ class RequestHandler(commands.Cog):
         # Only proceed with commands if "wobble" is in the message
         if "wobble" not in message_content:
             return
-        print("Wobble was called!")
 
         util_commands = self.bot.get_cog("UtilCommands")
 
