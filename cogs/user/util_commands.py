@@ -10,6 +10,10 @@ class UtilCommands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    @commands.hybrid_command(name='resetprofile', help="Resets your profile to level 1 and 0xp")
+    async def reset_profile_command(self, ctx):
+        await ctx.send(reset_profile(str(ctx.author)))
+
     @commands.hybrid_command(name='flipcoin', help='Flips a Coino')
     async def flip_coin_command(self, ctx):
         """Command to flip a digital coin
@@ -24,10 +28,6 @@ class UtilCommands(commands.Cog):
         if ctx is None:
             return f"Wobble heard to flip Coin, Wobble flipped `{result}` ||(o゜▽゜)o☆||"
         await ctx.send(f"Wobble heard to flip Coin, Wobble flipped `{result}` ||(o゜▽゜)o☆||")
-
-    @commands.hybrid_command(name='resetprofile', help="Resets your profile to level 1 and 0xp")
-    async def reset_profile_command(self, ctx):
-        await ctx.send(reset_profile(str(ctx.author)))
 
 
 async def setup(bot):

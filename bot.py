@@ -35,6 +35,8 @@ async def setup():
     await bot.load_extension('cogs.user.info_commands')
     await bot.load_extension('cogs.user.wobble_commands')
 
+    await bot.load_extension('cogs.developer.base_commands')
+
 
 # Main Entry Point
 async def main():
