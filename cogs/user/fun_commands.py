@@ -1,6 +1,5 @@
 import asyncio
 from datetime import datetime, timedelta
-from enum import member
 
 from discord.ext import commands
 from discord import Member
