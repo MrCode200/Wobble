@@ -1,43 +1,51 @@
 import asyncio
 from datetime import datetime, timedelta
+from enum import member
 
 from discord.ext import commands
+from discord import Member
+from discord import TextChannel
 
 class FunCommands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.prayer_tasks  = {}
 
-    @commands.command(name='pray_to_falschgeld', help='Daily tribute to God Falschgeld', hidden=True)
-    async def pray_to_falschgeld_command(self, ctx, pray: bool = False, hours: int = 9, minutes: int = 0):
-        """pray to falschgeld"""
+    @commands.hybrid_command(name='pray', help='Daily tribute to your God', hidden=True)
+    async def pray_command(self, ctx, pray: bool, god : Member, temple: TextChannel, hours: int, minutes: int = 0):
+        """Pray to Falschgeld daily at a specified time."""
+
         async def send_prayer():
-            await ctx.send("Heil @Mathe, the Boss of Falschgeld!")
+            if god.name == "mathe501":
+                await temple.send("Heil {god.mention}, the GOD of Falschgeld `(/≧▽≦)/`")
+            if god.name == "snowstar2731":
+                await temple.send("Heil {god.mention}, our beloved `GOBLIN GOD`! `(/≧▽≦)/`")
+                await temple.send("https://tenor.com/view/goblin-clash-royale-goblin-emote-sneaky-scheming-gif-1484412180542178994")
 
         async def prayer_task():
-            while pray:
-                # Calculate the time until the next target time
+            while True:
                 now = datetime.now()
                 target_time = now.replace(hour=hours, minute=minutes, second=0, microsecond=0)
-
-                # If the target time has already passed today, schedule it for the next day
                 if target_time <= now:
                     target_time += timedelta(days=1)
-
                 delay = (target_time - now).total_seconds()
-
-                # Wait until the target time
                 await asyncio.sleep(delay)
-
-                # Send the prayer message
                 await send_prayer()
 
 
-        # Create a background task for the prayer loop
         if pray:
-            asyncio.create_task(prayer_task())
-            await ctx.send(f"Daily prayer scheduled at {hours}:{minutes}!", ephemeral=True)
+            if ctx.author.id in self.prayer_tasks:
+                self.prayer_tasks[ctx.author.id].cancel()
+            task = asyncio.create_task(prayer_task())
+            self.prayer_tasks[ctx.author.id] = task
+            await ctx.send(f"Daily prayer scheduled at `{hours} hour(s)` and `{minutes} minute(s)` to {god.display_name} in the temple {temple.name}! `🛕(‾◡◝)`", ephemeral=True)
         else:
-            await ctx.send("Prayer not scheduled. Set `pray=True` to activate.", ephemeral=True)
+            if ctx.author.id in self.prayer_tasks:
+                self.prayer_tasks[ctx.author.id].cancel()
+                del self.prayer_tasks[ctx.author.id]
+                await ctx.send("Your prayer was cancelled, i am sure the god is not happy about that `╚(*⌂*)╝`", ephemeral=True)
+            else:
+                await ctx.send("No prayer task was scheduled. How could you not believe in **GOD** `(っ °Д °;)っ`?!", ephemeral=True)
 
 async def setup(bot):
     await bot.add_cog(FunCommands(bot))

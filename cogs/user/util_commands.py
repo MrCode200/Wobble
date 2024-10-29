@@ -26,8 +26,8 @@ class UtilCommands(commands.Cog):
 
         result = "head" if random.random() > 0.5 else "tail"
         if ctx is None:
-            return f"Wobble heard to flip Coin, Wobble flipped `{result}` ||(o゜▽゜)o☆||"
-        await ctx.send(f"Wobble heard to flip Coin, Wobble flipped `{result}` ||(o゜▽゜)o☆||")
+            return f"Wobble heard to flip Coin, Wobble flipped `{result}`. `(o゜▽゜)o☆`"
+        await ctx.send(f"Wobble heard to flip Coin, Wobble flipped `{result}`. `(o゜▽゜)oo`")
 
 
 async def setup(bot):
