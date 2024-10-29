@@ -2,6 +2,14 @@ import sqlite3
 from functools import lru_cache
 from pathlib import Path
 
+import os
+
+# Get the absolute path of the current file
+current_path = os.path.abspath(__file__)
+# Get the directory of the current file
+current_dir = os.path.dirname(current_path)
+
+
 @lru_cache(maxsize=None)
 def read_sql_query(sql_path: str) -> str:
     """Read the SQL query from a specified file.
@@ -11,15 +19,15 @@ def read_sql_query(sql_path: str) -> str:
     :param sql_path: The path to the SQL file to be read.
     :return: The content of the SQL file as a string.
     """
-    return Path(sql_path).read_text()
+    return Path(current_dir + sql_path).read_text()
 
 
 # Establishing a connection to the SQLite database
-conn = sqlite3.connect('data/user_level.db')
+conn = sqlite3.connect('./user_level.db')
 cursor = conn.cursor()
 
 # Execute the setup SQL script
-cursor.execute(read_sql_query("data/sql/setup.sql"))
+cursor.execute(read_sql_query("/sql/setup.sql"))
 conn.commit()
 
 
@@ -34,7 +42,7 @@ def add_or_update_user_xp_and_lvl(username: str, xp: int, lvl: int):
     :param lvl: The level to set for the user.
     """
     try:
-        cursor.execute(read_sql_query("data/sql/add_or_update.sql"),
+        cursor.execute(read_sql_query("/sql/add_or_update.sql"),
                        {"username": username, "xp": xp, "lvl": lvl})
         conn.commit()
     except sqlite3.Error as e:
@@ -50,7 +58,7 @@ def fetch_user_xp_and_lvl(username: str):
     :return: A tuple containing the user's XP and level if found; otherwise, None.
     """
     try:
-        cursor.execute(read_sql_query("data/sql/read.sql"), {"username": username})
+        cursor.execute(read_sql_query("/sql/read.sql"), {"username": username})
         result = cursor.fetchone()
         if result:
             print(f"User '{username}' has {result[0]} XP and {result[1]} Level.")
