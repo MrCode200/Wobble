@@ -4,10 +4,10 @@ from data import add_or_update_user_xp_and_lvl, fetch_user_xp_and_lvl
 def reset_profile(username: str):
     try:
         add_or_update_user_xp_and_lvl(username, 0, 1)
-        return f"Wobble was surprised to know you want to reset your profile ||w(ﾟДﾟ)w||, but he did reset them!"
+        return f"Wobble was surprised to know you want to reset your profile `w(ﾟДﾟ)w`, but he did reset them!"
     except Exception as e:
         print(e)
-        return f"Wobble had some problems resetting your profile ||(￣﹏￣；)||"
+        return f"Wobble had some problems resetting your profile `(￣﹏￣；)`"
 
 
 def check_level(username:str, xp: int):
@@ -16,14 +16,14 @@ def check_level(username:str, xp: int):
 
         if user_data is None:
             add_or_update_user_xp_and_lvl(username, xp, 1)
-            return f"Welcome `{username}`! You are **reborn** in this new World (〃￣︶￣)/||\(￣︶￣〃)||"
+            return f"Welcome `{username}`! You are **reborn** in this new World (〃￣︶￣)/`\(￣︶￣〃)`"
 
         updated_level = calculate_lvl(user_data[1], user_data[0] + xp)
 
         add_or_update_user_xp_and_lvl(username, user_data[0] + xp, updated_level)
 
         if updated_level > user_data[1]:
-            return f"**CONGRATS🎉**, Wobble is happy to announce that you **LEVELD UP** to `Level {updated_level}` ||o(*^＠^*)o!||"
+            return f"**CONGRATS🎉**, Wobble is happy to announce that you **LEVELD UP** to `Level {updated_level}`! `o(*^＠^*)o!`"
     except Exception as e:
         print(e)
 
