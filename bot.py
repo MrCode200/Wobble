@@ -1,6 +1,6 @@
 import logging
 
-import cst_logger
+import logging
 import os
 from dotenv import load_dotenv
 import atexit
@@ -17,7 +17,7 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 
 
 setup_logger(logging.DEBUG, log_in_json=False, stream_in_color=True)
-logger = cst_logger.getLogger('wobble.bot')
+logger = logging.getLogger('wobble.bot')
 
 # Bot Setup
 intents = Intents.default()
