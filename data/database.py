@@ -31,7 +31,7 @@ cursor.execute(read_sql_query("/sql/setup.sql"))
 conn.commit()
 
 
-def add_or_update_user_xp_and_lvl(username: str, xp: int, lvl: int):
+def add_or_update_user_xp_and_lvl(username: str, xp: int, lvl: int) -> None:
     """Add or update a user's experience points and level in the database.
 
     This function inserts a new user or updates the XP and level for an existing user
@@ -49,7 +49,7 @@ def add_or_update_user_xp_and_lvl(username: str, xp: int, lvl: int):
         print(f"An error occurred while adding or updating table: {e}")
 
 
-def fetch_user_xp_and_lvl(username: str):
+def fetch_user_xp_and_lvl(username: str) -> tuple[int, int] | None:
     """Fetch the experience points and level of a user from the database.
 
     This function retrieves the XP and level of the specified user from the database.
@@ -68,6 +68,7 @@ def fetch_user_xp_and_lvl(username: str):
             return None
     except sqlite3.Error as e:
         print(f"An error occurred while fetching xp: {e}")
+        return None
 
 
 def close():

@@ -8,7 +8,7 @@ from utils import check_level, reset_profile
 class RequestHandler(commands.Cog):
     """Cog that handles leveling events for users."""
 
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         """Initialize the LevelEvents cog.
 
         :param bot: The bot instance that this cog belongs to.
@@ -17,7 +17,16 @@ class RequestHandler(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message: Message):
-        """Listener that processes incoming messages, running associated functions"""
+        """
+        Listener that processes incoming messages, running associated functions only if the message contains str 'wobble'.
+        Function which are checked for are:
+
+        - "wobble" in message
+        - "flip coin" in message
+        - "reset me" in message
+
+        :param message: The message object that was sent.
+        """
 
         if message.author == self.bot.user:
             return
@@ -46,11 +55,5 @@ class RequestHandler(commands.Cog):
 
 
 
-async def setup(bot):
-    """Set up the LevelEvents cog.
-
-    This function adds the LevelEvents cog to the provided bot instance.
-
-    :param bot: The bot instance to which the cog will be added.
-    """
+async def setup(bot: commands.Bot):
     await bot.add_cog(RequestHandler(bot))
