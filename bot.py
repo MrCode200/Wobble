@@ -1,4 +1,6 @@
 import logging
+
+import cst_logger
 import os
 from dotenv import load_dotenv
 import atexit
@@ -7,12 +9,15 @@ from discord.ext import commands
 from discord import Intents
 
 from data import close
+from cst_logger import setup_logger
 
 # Load Discord Bot Token
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
-logger = logging.getLogger('wobble.bot')
+
+setup_logger(logging.DEBUG, log_in_json=False, stream_in_color=True)
+logger = cst_logger.getLogger('wobble.bot')
 
 # Bot Setup
 intents = Intents.default()

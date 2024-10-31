@@ -70,7 +70,11 @@ class BaseCommands(commands.Cog):
 
         Sends a message in the current channel and a DM to the command invoker.
         """
-        logger.debug(f"Command '{ctx.command.name}' called by `{ctx.author}` in `{ctx.guild}`.")
+        logger.debug(f"",
+                        extra={'command': str(ctx.command.name),
+                               'author': str(ctx.author),
+                               'guild': str(ctx.guild)})
+
         await ctx.send(
             "This is an example text. You can use all Formats: **Bold** - *Italic* - ~~Stroke~~ - SideBarOption - "
             "`codeblock` - ||hidden|| \n"
@@ -91,7 +95,11 @@ class BaseCommands(commands.Cog):
         :param ctx: The context of the command invocation.
         :param args1: An optional argument to be processed.
         """
-        logger.debug(f"Command '{ctx.command.name}' called by `{ctx.author}` in `{ctx.guild}`.")
+        logger.debug(f"",
+                        extra={'command': str(ctx.command.name),
+                               'author': str(ctx.author),
+                               'guild': str(ctx.guild)})
+
         await ctx.send(f"and this is a subcommand, it only runs with template mul_args")
 
     @commands.command(name="mul_args")
@@ -104,7 +112,11 @@ class BaseCommands(commands.Cog):
         :param ctx: The context of the command invocation.
         :param all_args: A variable number of arguments passed to the command.
         """
-        logger.debug(f"Command '{ctx.command.name}' called by `{ctx.author}` in `{ctx.guild}`.")
+        logger.debug(f"",
+                        extra={'command': str(ctx.command.name),
+                               'author': str(ctx.author),
+                               'guild': str(ctx.guild)})
+
         rest_args_joined = "` `".join(all_args)
 
         await ctx.send(f"This is the rest of the args: `{rest_args_joined}`. This can't be a hybrid_command!")
@@ -121,10 +133,18 @@ class BaseCommands(commands.Cog):
         :param error: The error raised during command invocation.
         """
         if isinstance(error, commands.MissingRequiredArgument):
-            logger.error(f"Missing required argument for command '{ctx.command.name}' by {ctx.author}.")
+            logger.error(f"Missing required argument for command '{ctx.command.name}'.",
+                        extra={'command': str(ctx.command.name),
+                               'author': str(ctx.author),
+                               'guild': str(ctx.guild)})
+
             await ctx.send("Missing argument: `first_arg` is required.")
         else:
-            logger.error("An unknown error was caught: " + str(error))
+            logger.error("An unknown error was caught: " + str(error),
+                        extra={'command': str(ctx.command.name),
+                               'author': str(ctx.author),
+                               'guild': str(ctx.guild)})
+
             await ctx.send("An unknown error was caught: " + str(error))
 
     @commands.Cog.listener()

@@ -1,6 +1,11 @@
+import logging
+
 from discord.ext import commands
 
 from data import fetch_user_xp_and_lvl
+
+
+logger = logging.getLogger('wobble.bot')
 
 
 class InfoCommands(commands.Cog):
@@ -25,10 +30,19 @@ class InfoCommands(commands.Cog):
                     information about the message, the channel, and the author.
         """
         data = fetch_user_xp_and_lvl(str(ctx.author))
-
         if data[0] is None:
+            logger.warning(f"Author not found in database, may be due to first time message sent by author.",
+                        extra={'command': str(ctx.command.name),
+                               'author': str(ctx.author),
+                               'guild': str(ctx.guild)})
+
             await ctx.send(f"DEBUG: `{ctx.author}` is not in the database")
         else:
+            logger.info(f"Author has `{data[0]} xp` and `level {data[1]}`.",
+                        extra={'command': str(ctx.command.name),
+                               'author': str(ctx.author),
+                               'guild': str(ctx.guild)})
+
             await ctx.send(f"Wobble knows that `{ctx.author}` has `{data[0]} xp` and is `Level {data[1]}` `(。・ω・。)`")
 
 

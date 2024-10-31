@@ -2,7 +2,6 @@ import logging
 
 from discord.ext import commands
 from discord import Message
-from discord.utils import get
 
 logger = logging.getLogger('wobble.bot')
 
@@ -46,7 +45,10 @@ class AntiChangeCommand(commands.Cog):
         """
         if ctx.author.name == "mr.magic9" or ctx.author.id == ctx.author.owner_id or ctx.author.guild_permissions.administrator:
             self.anti_delete = enable
-            logger.info(f"Anti delete message toggled {'On' if enable else 'Off'} by {ctx.author}.")
+            logger.info(f"Anti delete message toggled {'On' if enable else 'Off'}.",
+                        extra={'command': 'toggle_anti_del',
+                               'author': str(ctx.author),
+                               'guild': str(ctx.guild)})
 
             await ctx.send(
                 f"Anti delete message toggled `{'On' if enable else 'Off'}`! "
@@ -67,7 +69,10 @@ class AntiChangeCommand(commands.Cog):
         """
         if ctx.author.name == "mr.magic9" or ctx.author.id == ctx.author.owner_id or ctx.author.guild_permissions.administrator:
             self.anti_edit = enable
-            logger.info(f"Anti edit message toggled {'On' if enable else 'Off'} by {ctx.author}.")
+            logger.info(f"Anti edit message toggled {'On' if enable else 'Off'}.",
+                        extra={'command': 'toggle_anti_del',
+                               'author': str(ctx.author),
+                               'guild': str(ctx.guild)})
 
             await ctx.send(
                 f"Anti edit message toggled `{'On' if enable else 'Off'}`! "
@@ -85,7 +90,11 @@ class AntiChangeCommand(commands.Cog):
 
         :param message: The message object of the deleted message.
         """
-        logger.debug(f"Catched message deleted: '{message.content}' by {message.author}")
+        logger.debug(f"Catched message deleted: '{message.content}' by {message.author}",
+                        extra={'command': 'toggle_anti_del',
+                               'author': 'listener',
+                               'guild': str(message.guild)})
+
         if self.anti_delete and message.author.id != self.bot.user.id:
             await message.channel.send(
                 f"Wobble saw how `{message.author.name}` just deleted a message `(▀̿Ĺ̯▀̿ ̿)`: \nMessage: `{message.content}`"
@@ -104,7 +113,11 @@ class AntiChangeCommand(commands.Cog):
         :param before: The original message content before editing.
         :param after: The message content after editing.
         """
-        logger.debug(f"Catched message edited: '{before.content}' to '{after.content}' by {before.author}")
+        logger.debug(f"Catched message edited: '{before.content}' to '{after.content}' by {before.author}",
+                        extra={'command': 'toggle_anti_del',
+                               'author': 'listener',
+                               'guild': str(before.guild)})
+
         if self.anti_edit and before.author.id != self.bot.user.id:
             await before.channel.send(
                 f"Wobble saw how `{before.author.name}` just edited their message `(▀̿Ĺ̯▀̿ ̿)`:\n"

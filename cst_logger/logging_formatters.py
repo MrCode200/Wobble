@@ -25,15 +25,24 @@ class ColoredFormatter(Formatter):
 
         # Assemble the final log message format
         formatted_message = (
-            f"{BOLD}{log_color}[{UNDERLINE}{self.formatTime(record)}{RESET_UNDERLINE}| "
+            f"{log_color}{BOLD}[{UNDERLINE}{self.formatTime(record)}{RESET_UNDERLINE} | "
             f"{UNDERLINE}{record.levelname}{RESET_UNDERLINE}] "
             f"[{UNDERLINE}{record.filename}{RESET_UNDERLINE} | "
             f"{UNDERLINE}lineno({record.lineno}){RESET_UNDERLINE} | "
-            f"{UNDERLINE}{record.funcName}]{reset} "
-            f"=> {white}{record.getMessage()}{reset}"
+            f"{UNDERLINE}{record.funcName}]{reset}"
+            f" => "
         )
 
+        # Append extra information if available
+        formatted_message += f"[{log_color}{BOLD}{UNDERLINE}Command: {record.command if 'command' in record.__dict__ else 'None'}{RESET_UNDERLINE} | "
+        formatted_message += f"{UNDERLINE}Author: {record.author if 'author' in record.__dict__ else 'None'}{RESET_UNDERLINE} | "
+        formatted_message += f"{UNDERLINE}Guild: {record.guild if 'guild' in record.__dict__ else 'None'}{reset}]"
+
+        # Append the main log message
+        formatted_message += f" := {white}{record.getMessage()}{reset}"
+
         return formatted_message
+
 
 class JsonFormatter(Formatter):
     def format(self, record):
@@ -43,6 +52,9 @@ class JsonFormatter(Formatter):
             "file": record.filename,
             "line_number": record.lineno,
             "function": record.funcName,
+            "command": getattr(record, 'command', None),
+            "author": getattr(record, 'author', None),
+            "guild": getattr(record, 'guild', None),
             "message": record.getMessage(),
         }
 

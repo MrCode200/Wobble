@@ -1,4 +1,3 @@
-from datetime import datetime
 from logging import getLogger
 
 from logging import StreamHandler
@@ -23,7 +22,7 @@ def setup_logger(stream_level, stream_in_color: bool = True, log_in_json: bool =
     )
 
 
-    timed_rotating_file_handler = TimedRotatingFileHandler('logs/bot.log', when='midnight', interval=1, backupCount=3)
+    timed_rotating_file_handler = TimedRotatingFileHandler('../logs/bot.log', when='midnight', interval=1, backupCount=3)
     timed_rotating_file_handler.setLevel(DEBUG)
     timed_rotating_file_handler.setFormatter(JsonFormatter() if log_in_json else Formatter(
         '[%(asctime)s | %(levelname)s] [%(filename)s | lineno%(lineno)d | %(funcName)s] => %(message)s')
@@ -34,11 +33,11 @@ def setup_logger(stream_level, stream_in_color: bool = True, log_in_json: bool =
 
 
 if __name__ == '__main__':
-    setup_logger(DEBUG, log_in_json=True, stream_in_color=True)
+    setup_logger(DEBUG, log_in_json=False, stream_in_color=True)
 
     logger = getLogger('wobble.bot')
-    logger.debug('Testing Logger: DEBUG')
-    logger.info('Testing Logger: INFO')
+    logger.debug('Testing Logger: DEBUG', extra={'command': 'test', 'author': 'wobble', 'guild': 'wobble#0000'})
+    logger.info('Testing Logger: INFO', extra={'command': 'test', 'author': 'wobble'})
     logger.warning('Testing Logger: WARNING')
     logger.error('Testing Logger: ERROR')
     logger.critical('Testing Logger: CRITICAL')

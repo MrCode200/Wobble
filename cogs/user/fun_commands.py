@@ -51,7 +51,9 @@ class FunCommands(commands.Cog):
 
         async def send_prayer() -> None:
             """Sends the prayer message to the specified god in the temple channel."""
-            logger.debug(f"Command '{ctx.command.name}' sends prayer to `{god.name}` in channel `{temple.name}`.")
+            logger.debug(f"Prayer sent to `{god.name}` in channel `{temple.name}`.",
+                        extra={'command': str(ctx.command.name)})
+
             if god.name == GOD_MATHE501:
                 await temple.send(f"Heil {god.mention}, the GOD of Falschgeld `(/≧▽≦)/`")
             if god.name == GOD_SNOWSTAR2731:
@@ -66,26 +68,42 @@ class FunCommands(commands.Cog):
                 if target_time <= now:
                     target_time += timedelta(days=1)
                 delay = (target_time - now).total_seconds()
-                logger.debug(f"Sleeping for {delay} seconds till {target_time} for prayer.")
+                logger.debug(f"Sleeping for {delay} seconds till {target_time} for prayer.",
+                        extra={'command': str(ctx.command.name)})
                 await asyncio.sleep(delay)
                 await send_prayer()
 
         if pray:
             if ctx.author.id in self.prayer_tasks:
                 self.prayer_tasks[ctx.author.id].cancel()
-                logging.debug(f"Cancelled existing prayer task for {ctx.author}.")
+                logger.debug(f"Cancelled existing prayer task for {ctx.author}.",
+                        extra={'command': str(ctx.command.name),
+                               'author': str(ctx.author),
+                               'guild': str(ctx.guild)})
+
             task = asyncio.create_task(prayer_task())
             self.prayer_tasks[ctx.author.id] = task
-            logger.info(f"Command '{ctx.command.name}' added a prayer task from {ctx.author}.")
+            logger.info(f"Command '{ctx.command.name}' added a prayer task from {ctx.author}.",
+                        extra={'command': str(ctx.command.name),
+                               'author': str(ctx.author),
+                               'guild': str(ctx.guild)})
+
             await ctx.send(f"Daily prayer scheduled at `{hours} hour(s)` and `{minutes} minute(s)` to {god.display_name} in the temple {temple.name}! `🛕(‾◡◝)`", ephemeral=True)
         else:
             if ctx.author.id in self.prayer_tasks:
                 self.prayer_tasks[ctx.author.id].cancel()
                 del self.prayer_tasks[ctx.author.id]
-                logger.info(f"Command '{ctx.command.name}' removed a prayer task from {ctx.author}.")
+                logger.info(f"Removed a prayer task from {ctx.author}.",
+                        extra={'command': str(ctx.command.name),
+                               'author': str(ctx.author),
+                               'guild': str(ctx.guild)})
+
                 await ctx.send("Your prayer was cancelled, I am sure the god is not happy about that `╚(*⌂*)╝`", ephemeral=True)
             else:
-                logger.warning(f"Command '{ctx.command.name}' called by `{ctx.author}` but no prayer task was scheduled.")
+                logger.warning(f"No prayer task found (was scheduled) for `{ctx.author}`.",
+                        extra={'command': str(ctx.command.name),
+                               'author': str(ctx.author),
+                               'guild': str(ctx.guild)})
                 await ctx.send("No prayer task was scheduled. How could you not believe in **GOD** `(っ °Д °;)っ`?!", ephemeral=True)
 
 

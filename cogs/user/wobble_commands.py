@@ -1,4 +1,10 @@
+import logger
+
 from discord.ext import commands
+
+
+logger = logger.get_logger('wobble.bot')
+
 
 class WobbleCommands(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -13,6 +19,11 @@ class WobbleCommands(commands.Cog):
         :param ctx: The context in which the command was invoked, including
                     information about the message, the channel, and the author.
         """
+        logger.info("",
+                    extra={'command': str(ctx.command.name),
+                           'author': str(ctx.author),
+                           'guild': str(ctx.guild)})
+
         await ctx.send("WobbLe wOBblE `＼（〇_ｏ）／`")
 
 

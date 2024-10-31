@@ -1,8 +1,12 @@
 import sqlite3
+import logging
 from functools import lru_cache
 from pathlib import Path
-
 import os
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger('wobble.bot')
 
 # Get the absolute path of the current file
 current_path = os.path.abspath(__file__)
@@ -27,8 +31,12 @@ conn = sqlite3.connect('./user_level.db')
 cursor = conn.cursor()
 
 # Execute the setup SQL script
-cursor.execute(read_sql_query("/sql/setup.sql"))
-conn.commit()
+try:
+    cursor.execute(read_sql_query("/sql/setup.sql"))
+    conn.commit()
+    logger.info("Database setup script executed successfully.")
+except sqlite3.Error as e:
+    logger.error(f"An error occurred while executing the setup script: {e}")
 
 
 def add_or_update_user_xp_and_lvl(username: str, xp: int, lvl: int) -> None:
@@ -45,8 +53,9 @@ def add_or_update_user_xp_and_lvl(username: str, xp: int, lvl: int) -> None:
         cursor.execute(read_sql_query("/sql/add_or_update.sql"),
                        {"username": username, "xp": xp, "lvl": lvl})
         conn.commit()
+        logger.info(f"User '{username}' XP updated to {xp} and level to {lvl}.")
     except sqlite3.Error as e:
-        print(f"An error occurred while adding or updating table: {e}")
+        logger.error(f"An error occurred while adding or updating user '{username}': {e}")
 
 
 def fetch_user_xp_and_lvl(username: str) -> tuple[int, int] | None:
@@ -61,19 +70,20 @@ def fetch_user_xp_and_lvl(username: str) -> tuple[int, int] | None:
         cursor.execute(read_sql_query("/sql/read.sql"), {"username": username})
         result = cursor.fetchone()
         if result:
-            print(f"User '{username}' has {result[0]} XP and {result[1]} Level.")
+            logger.info(f"User '{username}' found with {result[0]} XP and {result[1]} Level.")
             return result
         else:
-            print(f"User '{username}' not found.")
+            logger.warning(f"User '{username}' not found.")
             return None
     except sqlite3.Error as e:
-        print(f"An error occurred while fetching xp: {e}")
+        logger.error(f"An error occurred while fetching XP for user '{username}': {e}")
         return None
 
 
-def close():
+def close() -> None:
     """Close the connection to the SQLite database.
 
     This function closes the connection to the database to free up resources.
     """
     conn.close()
+    logger.info("Database connection closed.")
