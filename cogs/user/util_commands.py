@@ -46,7 +46,7 @@ class UtilCommands(commands.Cog):
         """
         result = "head" if random.random() > 0.5 else "tail"
         logger.info(f"Coin flipped by: Result was `{result}`.",
-                    extra={'command': str(ctx.command.name),
+                    extra={'command': 'flip_coin',
                            'author': str(ctx.author),
                            'guild': str(ctx.guild)})
 

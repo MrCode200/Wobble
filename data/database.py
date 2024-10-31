@@ -27,7 +27,7 @@ def read_sql_query(sql_path: str) -> str:
 
 
 # Establishing a connection to the SQLite database
-conn = sqlite3.connect('./user_level.db')
+conn = sqlite3.connect(current_dir + '/user_level.db')
 cursor = conn.cursor()
 
 # Execute the setup SQL script
@@ -53,7 +53,7 @@ def add_or_update_user_xp_and_lvl(username: str, xp: int, lvl: int) -> None:
         cursor.execute(read_sql_query("/sql/add_or_update.sql"),
                        {"username": username, "xp": xp, "lvl": lvl})
         conn.commit()
-        logger.info(f"User '{username}' XP updated to {xp} and level to {lvl}.")
+        logger.debug(f"User '{username}' XP updated to {xp} and level to {lvl}.")
     except sqlite3.Error as e:
         logger.error(f"An error occurred while adding or updating user '{username}': {e}")
 
@@ -70,7 +70,7 @@ def fetch_user_xp_and_lvl(username: str) -> tuple[int, int] | None:
         cursor.execute(read_sql_query("/sql/read.sql"), {"username": username})
         result = cursor.fetchone()
         if result:
-            logger.info(f"User '{username}' found with {result[0]} XP and {result[1]} Level.")
+            logger.debug(f"User '{username}' found with {result[0]} XP and {result[1]} Level.")
             return result
         else:
             logger.warning(f"User '{username}' not found.")
