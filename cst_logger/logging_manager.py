@@ -6,12 +6,15 @@ from logging.handlers import TimedRotatingFileHandler
 from logging import DEBUG
 
 from logging import Formatter
-from logging_formatters import JsonFormatter, ColoredFormatter
+from .logging_formatters import JsonFormatter, ColoredFormatter
 
 
 def setup_logger(stream_level, stream_in_color: bool = True, log_in_json: bool = True):
     logger = getLogger('wobble.bot')
     logger.setLevel(DEBUG)
+
+    if logger.hasHandlers():
+        logger.handlers.clear()
 
     stream_handler = StreamHandler()
     stream_handler.setLevel(stream_level)
@@ -22,14 +25,18 @@ def setup_logger(stream_level, stream_in_color: bool = True, log_in_json: bool =
     )
 
 
-    timed_rotating_file_handler = TimedRotatingFileHandler('../logs/bot.log', when='midnight', interval=1, backupCount=3)
+    timed_rotating_file_handler = TimedRotatingFileHandler('logs/bot.log', when='midnight', interval=1, backupCount=3)
     timed_rotating_file_handler.setLevel(DEBUG)
-    timed_rotating_file_handler.setFormatter(JsonFormatter() if log_in_json else Formatter(
-        '[%(asctime)s | %(levelname)s] [%(filename)s | lineno%(lineno)d | %(funcName)s] => %(message)s')
+    timed_rotating_file_handler.setFormatter(
+        JsonFormatter() if log_in_json else Formatter(
+        '[%(asctime)s | %(levelname)s] [%(filename)s | lineno%(lineno)d | %(funcName)s] => %(message)s'
+        )
     )
 
     logger.addHandler(stream_handler)
     logger.addHandler(timed_rotating_file_handler)
+
+    logger.propagate = False
 
 
 if __name__ == '__main__':

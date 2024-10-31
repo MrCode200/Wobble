@@ -31,6 +31,7 @@ class RequestHandler(commands.Cog):
         if message.author == self.bot.user:
             return
 
+        ctx = await self.bot.get_context(message)
         message_content = message.content.lower()
         username = str(message.author)
 
@@ -47,7 +48,7 @@ class RequestHandler(commands.Cog):
         # Check for "flip coin" in message
         if "flip" in message_content and "coin" in message_content:
             if util_commands is not None:
-                await message.channel.send(await util_commands.flip_coin_command(None))
+                await message.channel.send(await util_commands.flip_coin_command(ctx))
 
         if "reset me" in message_content:
             if util_commands is not None:

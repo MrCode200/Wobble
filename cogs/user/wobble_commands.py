@@ -1,9 +1,9 @@
-import logger
+import logging
 
 from discord.ext import commands
 
 
-logger = logger.get_logger('wobble.bot')
+logger = logging.getLogger('wobble.bot')
 
 
 class WobbleCommands(commands.Cog):

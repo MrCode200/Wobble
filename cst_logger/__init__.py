@@ -1,1 +1,1 @@
-from logging_manager import setup_logger
+from .logging_manager import setup_logger

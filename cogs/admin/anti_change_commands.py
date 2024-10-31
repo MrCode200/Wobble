@@ -21,7 +21,7 @@ class AntiChangeCommand(commands.Cog):
         self.bot = bot
         self.anti_delete = False  #: Tracks the anti-delete message toggle state
         self.anti_edit = False  #: Tracks the anti-edit message toggle state
-        self.programmer_channel = 1299715274433499219
+        self.programmer_channel = None
 
     @commands.Cog.listener()
     async def on_ready(self) -> None:
@@ -31,7 +31,7 @@ class AntiChangeCommand(commands.Cog):
 
         :raises discord.NotFound: If the channel does not exist.
         """
-        self.programmer_channel = await self.bot.fetch_channel(703265159895973890)
+        self.programmer_channel = await self.bot.fetch_channel(1299715274433499219)
 
     @commands.hybrid_command(name="toggle_anti_del", help="Enable or disable message delete monitoring.")
     async def toggle_anti_del_command(self, ctx: commands.Context, enable: bool) -> None:
