@@ -1,3 +1,4 @@
+import logging
 import os
 from dotenv import load_dotenv
 import atexit
@@ -11,10 +12,13 @@ from data import close
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
+logger = logging.getLogger('wobble.bot')
 
 # Bot Setup
 intents = Intents.default()
 intents.message_content = True  # NOQA
+intents.messages = True
+intents.guilds = True
 intents.members = True
 bot = commands.Bot(command_prefix='!', intents=intents)
 
@@ -22,7 +26,7 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 # Handling the startup
 @bot.event
 async def on_ready():
-    print(f'{bot.user} is now running!')
+    logger.info(f'{bot.user} is now running!')
 
     await bot.tree.sync()
 
@@ -32,7 +36,7 @@ async def setup():
     await bot.load_extension('events.member_events')
     await bot.load_extension('events.request_manager')
 
-    await bot.load_extension('cogs.admin.admin_commands')
+    await bot.load_extension('cogs.admin.anti_change_commands')
 
     await bot.load_extension('cogs.user.fun_commands')
     await bot.load_extension('cogs.user.util_commands')
@@ -40,6 +44,7 @@ async def setup():
     await bot.load_extension('cogs.user.wobble_commands')
 
     await bot.load_extension('cogs.developer.base_commands')
+    logger.debug('Loaded all cogs')
 
 
 # Main Entry Point
@@ -48,6 +53,7 @@ async def main():
 
 
 def on_exit():
+    logger.info('Shutting down wobble...')
     close()
 
 atexit.register(on_exit)
