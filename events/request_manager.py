@@ -48,7 +48,7 @@ class RequestHandler(commands.Cog):
         # Check for "flip coin" in message
         if "flip" in message_content and "coin" in message_content:
             if util_commands is not None:
-                await message.channel.send(await util_commands.flip_coin_command(ctx))
+                await util_commands.flip_coin_command(ctx)
 
         if "reset me" in message_content:
             if util_commands is not None:

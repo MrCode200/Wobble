@@ -90,7 +90,7 @@ class AntiChangeCommand(commands.Cog):
 
         :param message: The message object of the deleted message.
         """
-        logger.debug(f"Catched message deleted: '{message.content}' by {message.author}",
+        logger.info(f"Catched message deleted: '{message.content}' by {message.author}",
                         extra={'command': 'toggle_anti_del',
                                'author': 'listener',
                                'guild': str(message.guild)})
@@ -113,7 +113,7 @@ class AntiChangeCommand(commands.Cog):
         :param before: The original message content before editing.
         :param after: The message content after editing.
         """
-        logger.debug(f"Catched message edited: '{before.content}' to '{after.content}' by {before.author}",
+        logger.info(f"Catched message edited: '{before.content}' to '{after.content}' by {before.author}",
                         extra={'command': 'toggle_anti_del',
                                'author': 'listener',
                                'guild': str(before.guild)})

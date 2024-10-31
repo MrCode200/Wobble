@@ -25,24 +25,22 @@ class ColoredFormatter(Formatter):
 
         # Assemble the final log message format
         formatted_message = (
-            f"{log_color}{BOLD}[{UNDERLINE}{self.formatTime(record)}{RESET_UNDERLINE} | "
-            f"{UNDERLINE}{record.levelname}{RESET_UNDERLINE}] "
-            f"[{UNDERLINE}{record.filename}{RESET_UNDERLINE} | "
-            f"{UNDERLINE}lineno({record.lineno}){RESET_UNDERLINE} | "
-            f"{UNDERLINE}{record.funcName}]{reset}"
-            f" => "
+            f"{log_color}{BOLD}[{UNDERLINE}{self.formatTime(record)}{RESET_UNDERLINE}] "
+            f"{log_color}{BOLD}[{record.levelname} | {record.filename} | "
+            f"lineno({record.lineno}) | {record.funcName}]{reset}\n"
         )
 
         # Append extra information if available
-        formatted_message += f"[{log_color}{BOLD}{UNDERLINE}Command: {record.command if 'command' in record.__dict__ else 'None'}{RESET_UNDERLINE} | "
-        formatted_message += f"{UNDERLINE}Author: {record.author if 'author' in record.__dict__ else 'None'}{RESET_UNDERLINE} | "
-        formatted_message += f"{UNDERLINE}Guild: {record.guild if 'guild' in record.__dict__ else 'None'}{reset}]"
+        formatted_message += (
+            f"{log_color}{BOLD}Command: {record.command if 'command' in record.__dict__ else 'None'}{reset}  |  "
+            f"{BOLD}Author: {record.author if 'author' in record.__dict__ else 'None'}{reset}  |  "
+            f"{BOLD}Guild: {record.guild if 'guild' in record.__dict__ else 'None'}{reset}\n"
+        )
 
         # Append the main log message
-        formatted_message += f" := {white}{record.getMessage()}{reset}"
+        formatted_message += f"{white}Message: {record.getMessage()}{reset}"
 
         return formatted_message
-
 
 class JsonFormatter(Formatter):
     def format(self, record):
