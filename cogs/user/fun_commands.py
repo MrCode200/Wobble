@@ -23,11 +23,10 @@ class FunCommands(commands.Cog):
     at a designated time and sends messages in the corresponding temple channel.
     """
 
-    def __init__(self, bot) -> None:
+    def __init__(self, bot: commands.Bot) -> None:
         """Initializes the FunCommands Cog.
 
         :param bot: The bot instance to which this cog belongs.
-        :type bot: commands.Bot
         """
         self.bot = bot
         self.prayer_tasks = {}  #: A dictionary to track scheduled prayer tasks per user.
@@ -115,5 +114,5 @@ class FunCommands(commands.Cog):
                 await ctx.send("No prayer task was scheduled. How could you not believe in **GOD** `(っ °Д °;)っ`?!", ephemeral=True)
 
 
-async def setup(bot):
+async def setup(bot: commands.Bot):
     await bot.add_cog(FunCommands(bot))
