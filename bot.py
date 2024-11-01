@@ -14,7 +14,7 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
 
-setup_logger(logging.INFO, log_in_json=True, stream_in_color=True)
+setup_logger(logging.DEBUG, log_in_json=True, stream_in_color=True)
 logger = logging.getLogger('wobble.bot')
 
 # Bot Setup

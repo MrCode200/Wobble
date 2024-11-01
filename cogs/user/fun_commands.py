@@ -12,6 +12,8 @@ logger = logging.getLogger('wobble.bot')
 # Constants for god names for special prayers
 GOD_MATHE501 = "mathe501"
 GOD_SNOWSTAR2731 = "snowstar2731"
+GAY_BARDIA8490 = "bardia.8490"
+
 
 
 class FunCommands(commands.Cog):
@@ -55,10 +57,16 @@ class FunCommands(commands.Cog):
                         extra={'command': str(ctx.command.name)})
 
             if god.name == GOD_MATHE501:
-                await temple.send(f"Heil {god.mention}, the GOD of Falschgeld `(/≧▽≦)/`")
-            if god.name == GOD_SNOWSTAR2731:
+                await temple.send(f"Heil {god.mention}, the GOD of `Falschgeld` `(/≧▽≦)/`")
+            elif god.name == GOD_SNOWSTAR2731:
                 await temple.send(f"Heil {god.mention}, our beloved `GOBLIN GOD`! `(/≧▽≦)/`")
                 await temple.send("https://tenor.com/view/goblin-clash-royale-goblin-emote-sneaky-scheming-gif-1484412180542178994")
+            elif god.name == GAY_BARDIA8490:
+                await temple.send(f"O Hell no i don't pray to a F*** gay person: {god.mention}, I am no IDIOT `( ͠° ͟ʖ ͡°))`")
+                await temple.send("https://cdn.discordapp.com/attachments/1299715274433499219/1301609665179684914/GayDGayGIF_2.gif?ex=672519f6&is=6723c876&hm=db30cda576a39f35cf0359afdc0fb71b3a25fdc697d3d67f1231d8dd58298e05&")
+                await temple.send(f"You look too gay that my eyes burn, F***!")
+            else:
+                await temple.send(f"Heil {god.mention}, our beloved God! `(/≧▽≦)/`")
 
         async def prayer_task() -> None:
             """The task that waits for the scheduled prayer time and sends the prayer message."""
@@ -88,7 +96,7 @@ class FunCommands(commands.Cog):
                                'author': str(ctx.author),
                                'guild': str(ctx.guild)})
 
-            await ctx.send(f"Daily prayer scheduled at `{hours} hour(s)` and `{minutes} minute(s)` to {god.display_name} in the temple {temple.name}! `🛕(‾◡◝)`", ephemeral=True)
+            await ctx.send(f"Daily prayer scheduled at `{hours} hour(s)` and `{minutes} minute(s)` to `{god.display_name}` in the temple `{temple.name}`! `🛕(‾◡◝)`", ephemeral=True)
         else:
             if ctx.author.id in self.prayer_tasks:
                 self.prayer_tasks[ctx.author.id].cancel()

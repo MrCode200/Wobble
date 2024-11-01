@@ -30,17 +30,18 @@ class ColoredFormatter(Formatter):
             f"lineno({record.lineno}) | {record.funcName}]{reset}\n"
         )
 
-        # Append extra information if available
+        # Append extra information if available, with labels underlined
         formatted_message += (
-            f"{log_color}{BOLD}Command: {record.command if 'command' in record.__dict__ else 'None'}{reset}  |  "
-            f"{BOLD}Author: {record.author if 'author' in record.__dict__ else 'None'}{reset}  |  "
-            f"{BOLD}Guild: {record.guild if 'guild' in record.__dict__ else 'None'}{reset}\n"
+            f"{BOLD}{UNDERLINE}Command:{RESET_UNDERLINE} {record.command if 'command' in record.__dict__ else 'None'}  |  "
+            f"{BOLD}{UNDERLINE}Author:{RESET_UNDERLINE} {record.author if 'author' in record.__dict__ else 'None'}  |  "
+            f"{BOLD}{UNDERLINE}Guild:{RESET_UNDERLINE} {record.guild if 'guild' in record.__dict__ else 'None'}\n"
         )
 
         # Append the main log message
         formatted_message += f"{white}Message: {record.getMessage()}{reset}"
 
         return formatted_message
+
 
 class JsonFormatter(Formatter):
     def format(self, record):
