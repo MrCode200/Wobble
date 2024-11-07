@@ -71,7 +71,7 @@ class BaseCommands(commands.Cog):
         Sends a message in the current channel and a DM to the command invoker.
         """
         logger.debug(f"",
-                        extra={'command': str(ctx.command.name),
+                        extra={'command': 'template_command',
                                'author': str(ctx.author),
                                'guild': str(ctx.guild)})
 
@@ -96,7 +96,7 @@ class BaseCommands(commands.Cog):
         :param args1: An optional argument to be processed.
         """
         logger.debug(f"",
-                        extra={'command': str(ctx.command.name),
+                        extra={'command': 'template_sub_command',
                                'author': str(ctx.author),
                                'guild': str(ctx.guild)})
 
@@ -113,7 +113,7 @@ class BaseCommands(commands.Cog):
         :param all_args: A variable number of arguments passed to the command.
         """
         logger.debug(f"",
-                        extra={'command': str(ctx.command.name),
+                        extra={'command': 'template_multiple_args_command',
                                'author': str(ctx.author),
                                'guild': str(ctx.guild)})
 

@@ -50,6 +50,8 @@ class FunCommands(commands.Cog):
             await ctx.send("Please provide a valid time. Hours should be between 0-23 and minutes between 0-59.", ephemeral=True)
             return
 
+        await ctx.defer()
+
         async def send_prayer() -> None:
             """Sends the prayer message to the specified god in the temple channel."""
             logger.debug(f"Prayer sent to `{god.name}` in channel `{temple.name}`.",

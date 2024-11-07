@@ -9,7 +9,7 @@ from logging import Formatter
 from .logging_formatters import JsonFormatter, ColoredFormatter
 
 
-def setup_logger(stream_level, stream_in_color: bool = True, log_in_json: bool = True):
+def setup_logger(stream_level, log_file_location: str, stream_in_color: bool = True, log_in_json: bool = True):
     logger = getLogger('wobble.bot')
     logger.setLevel(DEBUG)
 
@@ -25,7 +25,7 @@ def setup_logger(stream_level, stream_in_color: bool = True, log_in_json: bool =
     )
 
 
-    timed_rotating_file_handler = TimedRotatingFileHandler('logs/bot.jsonl', when='midnight', interval=1, backupCount=3)
+    timed_rotating_file_handler = TimedRotatingFileHandler(log_file_location, when='midnight', interval=1, backupCount=3)
     timed_rotating_file_handler.setLevel(DEBUG)
     timed_rotating_file_handler.setFormatter(
         JsonFormatter() if log_in_json else Formatter(
