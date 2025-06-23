@@ -54,7 +54,7 @@ class RequestHandler(commands.Cog):
 
         if "wobble wobble" in message_content:
             if wobble_commands is not None:
-                await wobble_commands.wobble_wobble_command(ctx)
+                await wobble_commands.wobble(ctx)
 
         # Check for "flip coin" in message
         if "flip" in message_content and "coin" in message_content:
