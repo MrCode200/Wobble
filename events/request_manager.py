@@ -5,6 +5,11 @@ from discord import Message
 
 from utils import check_level, reset_profile
 
+import logging
+
+logger = logging.getLogger("wobble.bot")
+
+
 
 class RequestHandler(commands.Cog):
     """Cog that handles leveling events for users."""
@@ -45,6 +50,11 @@ class RequestHandler(commands.Cog):
             return
 
         util_commands = self.bot.get_cog("UtilCommands")
+        wobble_commands = self.bot.get_cog("WobbleCommands")
+
+        if "wobble wobble" in message_content:
+            if wobble_commands is not None:
+                await wobble_commands.wobble_wobble_command(ctx)
 
         # Check for "flip coin" in message
         if "flip" in message_content and "coin" in message_content:
