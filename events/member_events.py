@@ -54,3 +54,7 @@ class MemberEvents(commands.Cog):
         logger.info(f"Member left: {member} | Farewell message attempted.",
                     extra={'command': 'on_member_remove',
                            'guild': str(member.guild)})
+
+
+async def setup(bot: commands.Bot) -> None:
+    await bot.add_cog(MemberEvents(bot))
