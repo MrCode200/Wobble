@@ -29,7 +29,7 @@ class RequestHandler(commands.Cog):
         :param message: The message object that was sent.
         """
 
-        if message.author.bot or message.webhood_id or message.type == discord.MessageType.channel_follow_add:
+        if message.author.bot or message.webhook_id or message.type == discord.MessageType.channel_follow_add:
             return
 
         ctx = await self.bot.get_context(message)

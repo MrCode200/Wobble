@@ -1,11 +1,9 @@
-import logging
 from discord.ext import commands
-from discord import Member
+from discord import Member, TextChannel
 from random import choice
+import logging
 
-# Configure logging
-logger = logging.getLogger('wobble.bot')
-
+logger = logging.getLogger(__name__)
 
 class MemberEvents(commands.Cog):
     """Cog that handles member events such as joining and leaving."""
@@ -21,44 +19,38 @@ class MemberEvents(commands.Cog):
     async def on_member_join(self, member: Member) -> None:
         """Handles the event when a member joins the server.
 
-        This method sends a welcome message to a designated channel when a new
-        member joins.
-
-        :param member: The member who has joined the server.
+        Sends a welcome message to the system channel if available.
         """
-        channel = self.bot.get_channel(1299755932636545095)
-        welcome_message = choice([
-            f"`Wobble` freut sich, dass du gejoined bist, @{member.mention} ||（￣︶￣）↗||",
-            f"hALlO @{member.mention} ||(❁´◡`❁)||",
-            f"Nice t0 sEe U joIn @{member.mention} ||(≧∇≦)ﾉ||"
-        ])
+        channel: TextChannel | None = member.guild.system_channel
 
-        await channel.send(welcome_message)
+        if channel and channel.permissions_for(member.guild.me).send_messages:
+            welcome_message = choice([
+                f"`Wobble` freut sich, dass du gejoined bist, {member.mention} ||（￣︶￣）↗||",
+                f"hALlO {member.mention} ||(❁´◡`❁)||",
+                f"Nice t0 sEe U joIn {member.mention} ||(≧∇≦)ﾉ||"
+            ])
+            await channel.send(welcome_message)
+        else:
+            logger.warning(f"System channel not available or insufficient permissions in {member.guild.name}.")
 
-        # Log the event
-        logger.info(f"Member joined: {member} | Welcome message sent.",
-                    extra={'command': 'on_member_leave',
+        logger.info(f"Member joined: {member} | Welcome message attempted.",
+                    extra={'command': 'on_member_join',
                            'guild': str(member.guild)})
 
     @commands.Cog.listener()
-    async def on_member_leave(self, member: Member) -> None:
+    async def on_member_remove(self, member: Member) -> None:
         """Handles the event when a member leaves the server.
 
-        This method sends a farewell message to a designated channel when a member
-        leaves.
-
-        :param member: The member who has left the server.
+        Sends a farewell message to the system channel if available.
         """
-        channel = self.bot.get_channel(1299755932636545095)
-        farewell_message = f"Wobbly hätte nie gedacht, dass einer ihn mal verlässt ||（；´д｀）ゞ||"
+        channel: TextChannel | None = member.guild.system_channel
 
-        await channel.send(farewell_message)
+        if channel and channel.permissions_for(member.guild.me).send_messages:
+            farewell_message = "Wobbly hätte nie gedacht, dass einer ihn mal verlässt ||（；´д｀）ゞ||"
+            await channel.send(farewell_message)
+        else:
+            logger.warning(f"System channel not available or insufficient permissions in {member.guild.name}.")
 
-        # Log the event
-        logger.info(f"Member left: {member} | Farewell message sent.",
-                    extra={'command': 'on_member_leave',
+        logger.info(f"Member left: {member} | Farewell message attempted.",
+                    extra={'command': 'on_member_remove',
                            'guild': str(member.guild)})
-
-
-async def setup(bot: commands.Bot) -> None:
-    await bot.add_cog(MemberEvents(bot))

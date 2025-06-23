@@ -1,6 +1,7 @@
 import asyncio
 import logging
 from datetime import datetime, timedelta
+from typing import Optional
 
 from discord.ext import commands
 from discord import Member
@@ -31,14 +32,20 @@ class FunCommands(commands.Cog):
         self.bot = bot
         self.prayer_tasks = {}  #: A dictionary to track scheduled prayer tasks per user.
 
-    @commands.hybrid_command(name='pray', help='Daily tribute to your God', hidden=True)
-    async def pray_command(self, ctx: commands.Context, pray: bool, god: Member, temple: TextChannel, hours: int, minutes: int = 0) -> None:
+    @commands.hybrid_command(
+        name='pray',
+        help='Schedule or cancel daily prayers to a god in a specific channel',
+        usage='<enable: True/False> <@god> <#channel> <hours> [minutes=0]',
+        brief='Schedule daily prayers to a god'
+    )
+    async def pray_command(self, ctx: commands.Context, pray: bool, god: Member, temple: TextChannel, hours: int, minutes: int = 0, message: Optional[str] = None) -> None:
         """Schedules a daily prayer to a specified god at a designated time.
 
         This command allows users to either schedule or cancel daily prayers.
         If scheduled, the bot will send a message to the specified temple channel
         at the chosen time.
 
+        :param message: The prayer message to be sent. If not provided, a default message will be used.
         :param ctx: The context of the command invocation.
         :param pray: A boolean indicating whether to schedule (True) or cancel (False) the prayer.
         :param god: The member representing the god to whom the prayer is directed.
@@ -46,18 +53,28 @@ class FunCommands(commands.Cog):
         :param hours: The hour (in 24-hour format) when the prayer should be sent.
         :param minutes: The minute when the prayer should be sent (default is 0).
         """
-        if not (0 <= hours <= 24) or not (0 <= minutes <= 60):
-            await ctx.send("Please provide a valid time. Hours should be between 0-23 and minutes between 0-59.", ephemeral=True)
+        if not (0 <= hours <= 23):
+            await ctx.send("❌ Hours must be between 0 and 23.", ephemeral=True)
             return
-
-        await ctx.defer()
+        if not (0 <= minutes <= 59):
+            await ctx.send("❌ Minutes must be between 0 and 59.", ephemeral=True)
+            return
+        if temple is None:
+            await ctx.send("❌ Please mention a valid text channel using #channel.", ephemeral=True)
+            return
+        if not temple.permissions_for(ctx.me).send_messages:
+            await ctx.send(f"❌ I don't have permission to send messages in {temple.mention}.", ephemeral=True)
+            return
+        await ctx.defer(ephemeral=True)
 
         async def send_prayer() -> None:
             """Sends the prayer message to the specified god in the temple channel."""
             logger.debug(f"Prayer sent to `{god.name}` in channel `{temple.name}`.",
                         extra={'command': str(ctx.command.name)})
 
-            if god.name == GOD_MATHE501:
+            if message is None:
+                await temple.send(f"Pray to {god.mention}, our beloved God! `(/≧▽≦)/`")
+            elif god.name == GOD_MATHE501:
                 await temple.send(f"Heil {god.mention}, the GOD of `Falschgeld` `(/≧▽≦)/`")
             elif god.name == GOD_SNOWSTAR2731:
                 await temple.send(f"Heil {god.mention}, our beloved `GOBLIN GOD`! `(/≧▽≦)/`")

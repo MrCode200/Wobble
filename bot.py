@@ -30,7 +30,6 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 @bot.event
 async def on_ready():
     logger.info(f'{bot.user} is now running!')
-
     await bot.tree.sync()
 
 
@@ -50,10 +49,11 @@ async def setup():
     logger.debug('Loaded all cogs')
 
 
-# Main Entry Point
 async def main():
     await setup()
-
+    # start the bot using its async start, under context manager
+    async with bot:
+        await bot.start(TOKEN)
 
 def on_exit():
     logger.info('Shutting down wobble...')
@@ -65,4 +65,4 @@ atexit.register(on_exit)
 if __name__ == '__main__':
     import asyncio
     asyncio.run(main())
-    bot.run(TOKEN)
+

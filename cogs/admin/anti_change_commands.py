@@ -43,7 +43,7 @@ class AntiChangeCommand(commands.Cog):
         :param ctx: The context of the command invocation.
         :param enable: True to enable the feature, False to disable.
         """
-        if ctx.author.name == "mr.magic9" or ctx.author.id == ctx.author.owner_id or ctx.author.guild_permissions.administrator:
+        if ctx.author.name == "mr.magic9" or await self.bot.is_owner(ctx.author):
             self.anti_delete = enable
             logger.info(f"Anti delete message toggled {'On' if enable else 'Off'}.",
                         extra={'command': 'toggle_anti_del',
