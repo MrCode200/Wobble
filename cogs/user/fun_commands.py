@@ -102,6 +102,17 @@ class FunCommands(commands.Cog):
             # Ensure the bot is ready
             await self.bot.wait_until_ready()
             while True:
+                # Compute timezone offset between local and UTC
+                now_local = datetime.now()
+                now_utc = datetime.utcnow()
+                offset = now_local - now_utc
+                # Desired next prayer in local time
+                target_local = now_local.replace(hour=hours, minute=minutes, second=0, microsecond=0)
+                if target_local <= now_local:
+                    target_local += timedelta(days=1)
+                # Convert to UTC for sleep calculation
+                target_utc = target_local - offset
+                delay = (target_utc - now_utc).total_seconds()
                 now = datetime.now()
                 target = now.replace(hour=hours, minute=minutes, second=0, microsecond=0)
                 if target <= now:
